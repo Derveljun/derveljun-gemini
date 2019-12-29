@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class StockService {
@@ -16,26 +18,25 @@ public class StockService {
         this.stockRepository = stockRepository;
     }
 
-    public Stock searchStock(Stock stock) {
-        return stockRepository.findByStockCode(stock.getStockCode());
+    public Stock searchStock(String stockCode) {
+        return stockRepository.findByStockCode(stockCode);
+    }
+
+    public List<Stock> searchStockList(String stockName) {
+        return stockRepository.findAllByStockNameIsLikeOrderByStockCode(stockName + "%");
     }
 
     public boolean createStock(Stock stock) {
-
         stockRepository.save(stock);
-
         return true;
     }
 
     public boolean modifyStock(Stock stock) {
-
         stockRepository.save(stock);
-
         return true;
     }
 
     public boolean removeStock(String stockCode) {
-
         stockRepository.deleteByStockCode(stockCode);
         return stockRepository.count() == 0;
     }
